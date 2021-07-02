@@ -26,12 +26,19 @@ import android.os.SystemClock
 import android.text.format.DateUtils
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.android.eggtimernotifications.util.sendNotification
 
 class SnoozeReceiver: BroadcastReceiver() {
     private val REQUEST_CODE = 0
 
     override fun onReceive(context: Context, intent: Intent) {
         val triggerTime = SystemClock.elapsedRealtime() + DateUtils.MINUTE_IN_MILLIS
+
+        val notificationManager = ContextCompat.getSystemService(
+            context,
+            NotificationManager::class.java
+        ) as NotificationManager
+        notificationManager.cancelAll()
 
         val notifyIntent = Intent(context, AlarmReceiver::class.java)
         val notifyPendingIntent = PendingIntent.getBroadcast(
